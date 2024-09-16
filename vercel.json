@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "index.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "index.js"
+        }
+    ],
+    "env": {
+        "MONGODB_URI": "mongodb+srv://vaibhavmeshram2908:vaibhav123@cluster0.1pkf5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+        "CLOUDINARY_CLOUD_NAME": "dtj9srbsk",
+        "CLOUDINARY_API_KEY": "335927119333625",
+        "CLOUDINARY_API_SECRET": "DQ9cWsodcxUyHKvM2jtCD_WbFx8",
+        "SECRET_KEY": "Vaibhav"
+    }
+}
