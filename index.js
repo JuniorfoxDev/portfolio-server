@@ -133,6 +133,17 @@ app.get('/projects', async (req, res) => {
     }
 });
 
+app.delete('/delete-project/:id', async (req,res) => {
+    try{
+        const deletedProject = await Project.findByIdAndDelete(id);
+        if (!deletedProject) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+        res.status(200).json({ message: 'Project deleted successfully' });
+    } catch(error){
+        console.log(error)
+    }
+})
 // Server Start
 const PORT = 3001;
 app.listen(PORT, () => {
