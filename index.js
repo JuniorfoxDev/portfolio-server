@@ -10,7 +10,13 @@ const jwt = require('jsonwebtoken');
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: 'https://portfolio-admin-vaibhav.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
+};
+
+app.use(cors(corsOptions));
 
 const saltRounds = 10;
 const secretKey = 'Vaibhav';
@@ -133,17 +139,17 @@ app.get('/projects', async (req, res) => {
     }
 });
 
-app.delete('/delete-project/:id', async (req,res) => {
-    try{
-        const deletedProject = await Project.findByIdAndDelete(id);
-        if (!deletedProject) {
-            return res.status(404).json({ message: 'Project not found' });
-        }
-        res.status(200).json({ message: 'Project deleted successfully' });
-    } catch(error){
-        console.log(error)
-    }
-})
+app.delete('/delete-project/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Project.findByIdAndDelete(id);
+    res.status(200).json({ message: 'Project deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 // Server Start
 const PORT = 3001;
 app.listen(PORT, () => {
