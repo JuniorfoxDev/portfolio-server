@@ -10,8 +10,15 @@ const jwt = require('jsonwebtoken');
 
 // Middleware
 app.use(express.json());
+const allowedOrigins = [
+  'https://portfolio-admin-vaibhav.vercel.app',
+  'https://vaibhavdev.vercel.app'
+];
+
 const corsOptions = {
-  origin: 'https://portfolio-admin-vaibhav.vercel.app',
+  origin: (origin, callback) => {
+    callback(null, allowedOrigins.includes(origin) || !origin);
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
 };
