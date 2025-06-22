@@ -55,7 +55,40 @@ const Project = require('./Models/Project');
 // Multer setup for file uploads (Memory storage for direct buffer handling)
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Routes
+// Stats
+const Visit = require('./Models/Visit');
+app.post('/track-visit', async (req,res) => {
+    try {
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        await Visit.create({ip})
+        res.status(200).json({message : "visit logged "})
+        console.log(Visit.create({ip}))
+    } catch (error){
+        console.error('Error logging visit:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+})
+app.get('/visit-stats', async (req, res) => {
+  try {
+    const stats = await Visit.aggregate([
+      {
+        $group: {
+          _id: {
+            year: { $year: "$visitedAt" },
+            month: { $month: "$visitedAt" }
+          },
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } }
+    ]);
+
+    res.status(200).json(stats);
+  } catch (error) {
+    console.error('Error fetching stats:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
 
 // Registration Route
 app.post('/register', async (req, res) => {
