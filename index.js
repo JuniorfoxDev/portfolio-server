@@ -12,7 +12,8 @@ const jwt = require('jsonwebtoken');
 app.use(express.json());
 const allowedOrigins = [
   'https://portfolio-admin-vaibhav.vercel.app',
-  'https://vaibhavdev.vercel.app'
+  'https://vaibhavdev.vercel.app',
+  'http://127.0.0.1:5173',
 ];
 
 const corsOptions = {
